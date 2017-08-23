@@ -7,3 +7,5 @@
 API
 https://www.showdoc.cc/pekipet?page_id=15114068
 ÓÃ»§Ãû£ºviking ÃÜÂë£º5340611
+git 
+https://github.com/fujiansong/pet.git
