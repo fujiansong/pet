@@ -68,6 +68,8 @@
 						}
 						Ajax("Api/User/Login", "POST", data, function (result) {
 							if (result.Code == 1) {
+								window.sessionStorage.setItem("uid", result.Data.uid);
+								window.sessionStorage.setItem("username", result.Data.username);
 								mui.openWindow({
 									url: '../index.html'
 								})

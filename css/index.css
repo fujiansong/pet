@@ -137,7 +137,7 @@
   overflow: hidden;
   position: relative;
   overflow-x: scroll;
-
+  background:#fff;
 }
 .pet-hot-activity .pet-hot-activity-item .pet-scroll ul{
   padding:0;
