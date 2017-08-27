@@ -20,7 +20,7 @@
 	<header id="header" class="mui-bar mui-bar-nav">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 		<div class="mui-input-row mui-search">
-			<input type="search" class="mui-input-clear" placeholder="">
+			<input type="search" id="searchBar" class="mui-input-clear" placeholder="">
 		</div>
 		<a class="mui-pull-right iconfont icon-gouwuche2"></a>
 	</header>
@@ -367,16 +367,21 @@
 				if (result.Code == 1) {
 					var html = "";
 					for (var i in result.Data) {
-						html += '<a href="' + result.Data[i].ad_link + '" class="swiper-slide"><img src= "' + result.Data[i].ad_code + '"  alt= "' + result.Data[i].ad_name + '" /></a >'
+						html += '<a href="' + result.Data[i].ad_link + '" class="swiper-slide"><img src= "' + result.Data[i].ad_code +
+							'"  alt= "' + result.Data[i].ad_name + '" /></a >'
 					}
 					$(".swiper-container .swiper-wrapper").html(html);
 					swiperInitial();
 				}
 			});
 			// 分类列表
-			Ajax("Api/Goods/GetCategoryList", "POST", { parentid: 0 }, function (result) {
+			Ajax("Api/Goods/GetCategoryList", "POST", {
+				parentid: 0
+			}, function (result) {
 				if (result.Code == 1) {
-					var html = "", html2 = "", catIdArr = [];
+					var html = "",
+						html2 = "",
+						catIdArr = [];
 					for (var key in result.Data) {
 						html += '<a class="mui-control-item" href="#item' + key + '">' + result.Data[key].cat_name + '</a>';
 						catIdArr.push(result.Data[key].cat_id);
@@ -385,7 +390,9 @@
 					for (var i in catIdArr) {
 						// 获取子类
 						html2 = '<div id="item' + i + '" class="mui-slider-item mui-control-content pet-clearfix">';
-						Ajax("Api/Goods/GetCategoryList", "POST", { parentid: catIdArr[i] }, function (result) {
+						Ajax("Api/Goods/GetCategoryList", "POST", {
+							parentid: catIdArr[i]
+						}, function (result) {
 							if (result.Code == 1) {
 								for (var key in result.Data) {
 									html2 += '<a href="javascript:void(0)"><img src="' + result.Data[key].pic_url + '" alt="" /><span>' + result.Data[key].cat_name + '</span></a>'
@@ -423,7 +430,7 @@
 			//banner轮播图初始化
 			function swiperInitial() {
 				var swiper = new Swiper('.swiper-container', {
-					autoplay: 3000,//可选选项，自动滑动
+					autoplay: 3000, //可选选项，自动滑动
 					loop: true,
 					speed: 1000,
 					pagination: '.swiper-pagination',
@@ -444,8 +451,7 @@
 			$("#header a.mui-pull-right").on("tap", function () {
 				webview = mui.openWindow({
 					url: 'html/shopping.html',
-					extras: {
-					}
+					extras: {}
 				});
 			})
 			function jumpPage(url) {
@@ -455,6 +461,21 @@
 					}
 				});
 			}
+
+			//搜索商品
+			$("#searchBar").keydown(function (e) {
+				if (e.keyCode == 13) {
+					window.sessionStorage.setItem("keyword", $("#searchBar").val())
+					webview = mui.openWindow({
+						url: 'html/screen.html',
+						extras: {}
+					});
+					
+
+				}
+			})
+
+
 		})
 	</script>
 </body>
