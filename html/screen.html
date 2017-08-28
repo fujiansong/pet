@@ -188,6 +188,7 @@
 <!--<script src="../js/pullToRefresh.js"></script>-->
 <script src="../module/iscroll.js" type="text/javascript" charset="utf-8"></script>
 <script src="../module/pullToRefresh.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js"></script>
 <script type="text/javascript">
 	mui.ready(function () {
 		// 上拉加载
@@ -208,12 +209,7 @@
 				wrapper.refresh();
 			}, 1000)
 		}
-		$("#wrapper ul li a").on("tap", function () {
-			mui.openWindow({
-				url: 'details.html',
-				extras: {}
-			});
-		})
+
 		var param = window.sessionStorage.getItem("keyword");
 		$("#searchBar").val(param);
 		var data = {
@@ -226,8 +222,8 @@
 				var html = "";
 				for (var i in result.Data.list) {
 					html += '<li>' +
-						'<a class="pet-clearfix">' +
-						'<img src="' + result.Data.list[i].goods_img + '" alt="" />' +
+						'<a class="pet-clearfix " data-url="details.html?goodsID =' + result.Data.list[i].goods_id + '">' +
+						'<img class="list-li" src="' + result.Data.list[i].goods_img + '" alt="" />' +
 						'<div class="mui-pull-left">' +
 						'<p class="mui-ellipsis">' + result.Data.list[i].goods_name + '</p>' +
 						'<div class="list-template-one-div pet-clearfix">' +
@@ -238,14 +234,39 @@
 						'</li>'
 				}
 				$(".list-template-one").html(html);
+				details();
 			}
 		})
+
+		//跳转到详细页面
+		function details() {
+			$("#wrapper ul li a").on("tap", function () {
+				var url = $(this).attr("data-url");
+				jumpPage(url);
+			})
+		}
+		//搜索
 		$("#searchBar").keydown(function (e) {
-				if (e.keyCode == 13) {
-					window.sessionStorage.setItem("keyword",$("#searchBar").val());
-					window.location.reload();
-				}
+			if (e.keyCode == 13) {
+				window.sessionStorage.setItem("keyword", $("#searchBar").val());
+				window.location.reload();
+			}
 		})
+		$(".screen-tab a").on('tap', function () {
+			var index = $(this).index();
+			if (index == 3 && $(".list-template-one li").length > 0) {
+				if ($(".list-template-one li").hasClass("arrangeli")) {
+					$(".list-template-one li").removeClass("arrangeli");
+				    $(".list-template-one li a>img").removeClass("arrangeimg").addClass("list-li");
+
+				} else {
+					$(".list-template-one li").addClass("arrangeli");
+					$(".list-template-one li a>img").removeClass("list-li").addClass("arrangeimg");
+				}
+
+			}
+		})
+
 	})
 </script>
 </body>
