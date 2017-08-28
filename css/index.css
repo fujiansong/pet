@@ -32,6 +32,9 @@
 }
 /*轮播图 end  */
 /*tab 选项卡start*/
+.pet-tab{
+  background: #fff;
+}
 .pet-tab .mui-slider-indicator{
       background: #f6f6f6;
       font-size:14px;

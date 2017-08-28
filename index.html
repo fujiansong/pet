@@ -357,11 +357,11 @@
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src="js/swipe/swiper-3.4.0.min.js"></script>
 	<script src="js/Ajax.js"></script>
-	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>  
+	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 	<script type="text/javascript">
 		mui.ready(function () {
 			// 获取IP地址，作为cookieid
-			window.sessionStorage.setItem("cookieid",returnCitySN["cip"]+','+returnCitySN["cname"]);
+			window.sessionStorage.setItem("cookieid", returnCitySN["cip"] + ',' + returnCitySN["cname"]);
 			// 获取首页轮播图
 			Ajax("Api/Active/GetSlideList", "GET", "", function (result) {
 				if (result.Code == 1) {
@@ -383,22 +383,24 @@
 						html2 = "",
 						catIdArr = [];
 					for (var key in result.Data) {
-						html += '<a class="mui-control-item" href="#item' + key + '">' + result.Data[key].cat_name + '</a>';
+						html += '<a class="mui-control-item" href="#item' + result.Data[key].cat_id + '">' + result.Data[key].cat_name + '</a>';
 						catIdArr.push(result.Data[key].cat_id);
 					}
 					$(".pet-tab .mui-segmented-control-inverted").html(html);
 					for (var i in catIdArr) {
 						// 获取子类
-						html2 = '<div id="item' + i + '" class="mui-slider-item mui-control-content pet-clearfix">';
+						html2 = '<div id="item' + catIdArr[i] + '" class="mui-slider-item mui-control-content pet-clearfix"></div>';
+						$(".pet-tab .mui-slider-group").append(html2);
 						Ajax("Api/Goods/GetCategoryList", "POST", {
 							parentid: catIdArr[i]
 						}, function (result) {
 							if (result.Code == 1) {
+								var html = "";
 								for (var key in result.Data) {
-									html2 += '<a href="javascript:void(0)"><img src="' + result.Data[key].pic_url + '" alt="" /><span>' + result.Data[key].cat_name + '</span></a>'
+									html += '<a href="javascript:void(0)"><img src="' + result.Data[key].pic_url + '" alt="" /><span>' + result.Data[key].cat_name + '</span></a>'
 								}
-								html2 += '</div>';
-								$(".pet-tab .mui-slider-group").append(html2);
+								$(".pet-tab .mui-slider-group").find("#item" + result.Data[0].parent_id).html(html);
+								classifyBtn();
 							}
 						})
 					}
@@ -421,8 +423,8 @@
 				}
 			});
 			// 热门活动商品点击
-			function hottap(){
-				$(".pet-scroll ul li").on("tap",function(){
+			function hottap() {
+				$(".pet-scroll ul li").on("tap", function () {
 					var url = $(this).find("a").attr("data-url");
 					jumpPage(url);
 				})
@@ -444,9 +446,14 @@
 			})
 
 			//跳转到列表页
-			$(".pet-tab .mui-slider-item a").on("tap", function () {
-				jumpPage('html/screen.html');
-			})
+			function classifyBtn() {
+				$(".pet-tab .mui-slider-item a").unbind("tap").on("tap", function () {
+					var classifyName = $(this).find("span").html();
+					window.sessionStorage.setItem("keyword",classifyName);
+					jumpPage('html/screen.html');
+				})
+			}
+
 			//	购物车
 			$("#header a.mui-pull-right").on("tap", function () {
 				webview = mui.openWindow({
@@ -470,7 +477,7 @@
 						url: 'html/screen.html',
 						extras: {}
 					});
-					
+
 
 				}
 			})
