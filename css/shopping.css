@@ -89,7 +89,10 @@ body{
     padding: 0 1em;
     font-size:12px;
 }
-.footer>div>span{
+.footer>div>p{
+    float: left;
+}
+.footer>div>p>span{
     display:inline-block;
     vertical-align: middle;
     width: 1.429em;
@@ -97,6 +100,9 @@ body{
     border-radius:50%;
     background: #fff;
     margin-right: 6px;
+}
+.footer>div>p>span.active{
+    background:#df231c;
 }
 .footer>div div p span{
     color:#fff;

@@ -37,7 +37,7 @@
 		</ul>
 		<div class="footer pet-clearfix">
 			<div class="mui-pull-left">
-				<span class="check_all"></span>全选
+				<p><span class="check_all"></span>全选</p>
 				<div class="mui-pull-right">
 					<p>总金额：<span>333元</span></p>
 				</div>
@@ -64,7 +64,6 @@
 			});
 			// 查询商品
 			Ajax("Api/ShopCar/GetShopCarList", "POST", { cookieid: cookieid, uid: uid }, function (result) {
-				console.log(result);
 				if (result.Code == 1) {
 					if (result.Data.length == 0) {
 						$(".shopping-list").hide();
@@ -121,6 +120,7 @@
 					total();
 				})
 			}
+			// 计算总金额
 			function total() {
 				var list = $(".shopping-list li");
 				console.log(list.length)
@@ -135,7 +135,17 @@
 				}
 				$(".footer .mui-pull-left div p span").html(total + "元");
 			}
-
+			// 点击全选
+			$(".footer div>p").on("tap", function () {
+				if ($(this).find("span").hasClass("active")) {
+					$(this).find("span").removeClass("active");
+					$(".shopping-list li").find(".checkbox").removeClass("active");
+				} else {
+					$(this).find("span").addClass("active");
+					$(".shopping-list li").find(".checkbox").addClass("active");
+				}
+				total();
+			})
 
 
 
